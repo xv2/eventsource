@@ -605,6 +605,12 @@ describe('HTTP Request', function () {
     createServer(function (err, server) {
       if (err) return done(err)
 
+      var version = process.version;
+      var majorVersion = +((+version[0] ? version : version.substr(1)).split('.')[0])
+      if (!isNaN(majorVersion) && majorVersion < 5) {
+        return done() // `createConnection` option has been added in the Node.js v5
+      }
+
       var testResult = false
 
       server.on('request', function () {
